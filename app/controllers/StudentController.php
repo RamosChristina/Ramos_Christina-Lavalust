@@ -9,10 +9,10 @@ class StudentController extends Controller
             session_start();
         }
 
-        // Visiting Home is what "unlocks" the profile page
+    
         $_SESSION['cr_profile_access'] = true;
 
-        // Pick up a one-time notice from the middleware, if any
+        
         $data['message'] = $_SESSION['cr_access_message'] ?? null;
         unset($_SESSION['cr_access_message']);
 

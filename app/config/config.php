@@ -101,6 +101,7 @@ $config['proxy_enabled']           = FALSE;
 */
 $config['index_page']               = 'index.php';
 
+
 /*
 |--------------------------------------------------------------------------
 | Error Logging Threshold
