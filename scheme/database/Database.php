@@ -262,15 +262,20 @@ class Database {
                 throw new PDOException("Unsupported database driver: $driver");
         }
 
-        $options = array(
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-        );
+       $options = array(
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+);
 
-        try {
-            $this->db = new PDO($dsn, $username, $password, $options);
-            $this->driver = $this->db->getAttribute(PDO::ATTR_DRIVER_NAME);
+        $ssl_ca = getenv('DB_SSL_CA');
+        if ($driver === 'mysql' && !empty($ssl_ca) && file_exists($ssl_ca)) {
+            $options[PDO::MYSQL_ATTR_SSL_CA] = $ssl_ca;
+            $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = true;
+        }
+
+try {
+    $this->db = new PDO($dsn, $username, $password, $options);
         } catch (Exception $e) {
             $error = load_class('Errors', 'kernel');
             $error->show_database_error(
