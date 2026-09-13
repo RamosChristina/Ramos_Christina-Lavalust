@@ -1,8 +1,7 @@
 <?php
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
-
-class StudentMiddleware
+class AuthMiddleware
 {
     public function handle(Closure $next)
     {
@@ -10,12 +9,12 @@ class StudentMiddleware
             session_start();
         }
 
-        if (!empty($_SESSION['cr_profile_access'])) {
+        if (!empty($_SESSION['auth_user_id'])) {
             return $next();
         }
 
-        $_SESSION['cr_access_message'] = 'Access denied: please visit the Student Home page first before viewing the profile.';
-        header('Location: ' . site_url('student'));
+        $_SESSION['auth_error'] = 'Please log in to access that page.';
+        header('Location: ' . site_url('login'));
         exit;
     }
 }

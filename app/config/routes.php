@@ -49,3 +49,21 @@ $router->get('/student/profile', 'StudentController::profile')->middleware('stud
 
 
 $router->get('/users', 'UsersController::index');
+$router->get('/users/create', 'UsersController::create');
+$router->post('/users/store', 'UsersController::store');
+$router->get('/users/edit/{id}', 'UsersController::edit')->where_number('id');
+$router->post('/users/update/{id}', 'UsersController::update')->where_number('id');
+$router->post('/users/delete/{id}', 'UsersController::delete')->where_number('id');
+
+// Auth
+$router->get('/login', 'AuthController::login');
+$router->post('/login', 'AuthController::authenticate');
+$router->get('/logout', 'AuthController::logout');
+
+// Products (protected)
+$router->get('/products', 'ProductController::index')->middleware('auth');
+$router->get('/products/create', 'ProductController::create')->middleware('auth');
+$router->post('/products/store', 'ProductController::store')->middleware('auth');
+$router->get('/products/edit/{id}', 'ProductController::edit')->where_number('id')->middleware('auth');
+$router->post('/products/update/{id}', 'ProductController::update')->where_number('id')->middleware('auth');
+$router->post('/products/delete/{id}', 'ProductController::delete')->where_number('id')->middleware('auth');
